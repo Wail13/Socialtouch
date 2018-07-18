@@ -15,6 +15,12 @@ from sklearn.datasets import make_regression
 from sklearn.preprocessing import MinMaxScaler
 import numpy as np
 from sklearn.decomposition import PCA
+ from itertools import  combinations,product
+ from scipy.spatial import distance
+
+Stimulus={'hug1_p':1,'hug2_p':2,'hug3_p':3,'str1_p':4,'str2_p':5,'hold1_p':6,'tap1_neu':7,
+          'sha1_n':8,'sha2_n':9,'gri1_n':10,'nudg1_n':11,'nudg2_n':12,'slap1_n':13}
+
 
 def bar(data):
     sizes=np.sum(data,axis=0)
@@ -123,16 +129,44 @@ print('#############  Accuracy of the classifier for touch_zones/actions(hug,sla
       
       
 
-      
-      
-      
-      
-      
-      
- 
+#####################################################################################################################
+d=touched.groupby(['Stimulus']).mean()
+          
+d2=d[['T0','T1','T2','T3','T4','T5','T6','T7']]
+d2=d2.values
+d3=np.where(d2>=0.5,1,0)
+plt.imshow(d2)
+plt.set_xticklabels(['T0','T1','T2','T3','T4','T5','T6','T7'])
 
- 
 
+
+
+#####################################optimization ###################################################################
+
+x=[0,1,1,0,1,1,0,1]
+
+objectiv(d2,x)
+def objectiv(d2,x):
+    val=0
+    for count,f in enumerate(x):
+        if not f:
+            d2[:,count]=0
+        
+    
+    for d in combinations(list(range(0,8)), 2):
+        i,j=d
+        val=(distance.euclidean(d2[i,:],d2[j,:]))+val
+        
+    return val
+ 
+    
+all_val=[]   
+x_all=[] 
+for i in product([0,1], repeat=8):
+    print(list(i))
+    x_all.append(list(i))
+    if(np.sum(list(i)) >= 3):
+        all_val.append(objectiv(d2.copy(),list(i))/(np.sum(list(i))+1))
 
 
 
