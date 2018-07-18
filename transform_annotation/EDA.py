@@ -130,13 +130,7 @@ print('#############  Accuracy of the classifier for touch_zones/actions(hug,sla
       
 
 #####################################################################################################################
-d=touched.groupby(['Stimulus']).mean()
-          
-d2=d[['T0','T1','T2','T3','T4','T5','T6','T7']]
-d2=d2.values
-d3=np.where(d2>=0.5,1,0)
-plt.imshow(d2)
-plt.set_xticklabels(['T0','T1','T2','T3','T4','T5','T6','T7'])
+
 
 
 
